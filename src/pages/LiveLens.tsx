@@ -117,9 +117,8 @@ const LiveLens: React.FC = () => {
       const inputCtx = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
       const outputCtx = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
       audioContextRef.current = outputCtx;
-
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const sessionPromise = ai.live.connect({
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
+            const sessionPromise = ai.live.connect({
         model: 'gemini-2.5-flash-native-audio-preview-12-2025',
         callbacks: {
           onopen: () => {

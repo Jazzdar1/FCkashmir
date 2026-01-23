@@ -2,8 +2,7 @@
 import { GoogleGenAI, Type, Modality } from "@google/genai";
 import { DiseaseAnalysis } from "../types";
 
-const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
-
+const getAI = () => new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
 /**
  * Advanced Multi-Stage Image Preprocessing Pipeline
  */
