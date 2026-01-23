@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 
-const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
+const getAI = () => new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
 
 export const fetchNewsTicker = async (category: 'kashmir' | 'sports' | 'latest') => {
   const ai = getAI();
