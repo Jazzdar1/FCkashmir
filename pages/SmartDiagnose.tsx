@@ -31,7 +31,9 @@ import {
   Dna,
   ScanEye
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+// Fix: Use a more robust import pattern for react-router-dom to handle environment-specific export issues
+import * as ReactRouterDOM from 'react-router-dom';
+const { Link } = ReactRouterDOM as any;
 import { analyzeCropDisease, generateUrduDiagnosisAudio, getDeepExpertView } from '../services/gemini';
 import { DiseaseAnalysis } from '../types';
 
@@ -351,7 +353,7 @@ const SmartDiagnose: React.FC = () => {
             )}
 
             {loading && (
-              <div className="absolute inset-0 bg-emerald-950/80 backdrop-blur-md flex flex-col items-center justify-center text-center p-8 z-20">
+              <div className="absolute inset-0 bg-emerald-950/80 backdrop-blur-md z-20 flex flex-col items-center justify-center text-center p-8 z-20">
                 <div className="relative mb-8">
                   <div className="w-24 h-24 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin" />
                   <Microscope className="absolute inset-0 m-auto w-10 h-10 text-emerald-400 animate-pulse" />

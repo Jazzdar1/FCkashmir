@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Search, 
@@ -13,9 +14,10 @@ import {
   Store,
   Map as MapIcon,
   X,
-  AlertCircle
+  AlertCircle,
+  BarChart3
 } from 'lucide-react';
-import { AreaChart, Area, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { findNearbyMandis } from '../services/gemini';
 
 const priceHistory = [
@@ -67,11 +69,7 @@ const MarketPrices: React.FC = () => {
       async (position) => {
         try {
           const res = await findNearbyMandis(position.coords.latitude, position.coords.longitude);
-          // FIX: Ensure text is always a string
-          setNearbyResults({
-            text: res.text ?? "No nearby mandi information available.",
-            sources: res.sources
-          });
+          setNearbyResults(res);
         } catch (err) {
           setError("Failed to fetch nearby mandis using AI.");
         } finally {

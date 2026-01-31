@@ -1,7 +1,9 @@
 
 import React from 'react';
 import { ShieldCheck, Lock, Eye, MapPin, Camera, Mic, Info, ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+// Fix: Use a more robust import pattern for react-router-dom to handle environment-specific export issues
+import * as ReactRouterDOM from 'react-router-dom';
+const { Link } = ReactRouterDOM as any;
 
 const PrivacyPolicy: React.FC = () => {
   return (

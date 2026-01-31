@@ -1,6 +1,7 @@
+
 import { GoogleGenAI } from "@google/genai";
 
-const getAI = () => new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
+const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const fetchNewsTicker = async (category: 'kashmir' | 'sports' | 'latest') => {
   const ai = getAI();
@@ -12,16 +13,17 @@ export const fetchNewsTicker = async (category: 'kashmir' | 'sports' | 'latest')
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-exp', // Adjusted to latest stable model or use your preferred model
+      model: 'gemini-3-flash-preview',
       contents: prompts[category],
       config: {
         tools: [{ googleSearch: {} }]
       }
     });
-    // FIX: Provide a default string if response.text is undefined
-    const text = response.text ?? "News updates currently unavailable.";
-    return text.replace(/\n/g, ' ').trim();
-  } catch (e) {
+    return response.text.replace(/\n/g, ' ').trim();
+  } catch (e: any) {
+    if (e.status === 429 || e.message?.includes('429') || e.message?.toLowerCase().includes('quota')) {
+      return "News feed temporarily unavailable (High Traffic).";
+    }
     return "Updating live feed...";
   }
 };

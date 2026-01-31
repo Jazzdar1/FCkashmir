@@ -117,8 +117,9 @@ const LiveLens: React.FC = () => {
       const inputCtx = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
       const outputCtx = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
       audioContextRef.current = outputCtx;
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
-            const sessionPromise = ai.live.connect({
+
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const sessionPromise = ai.live.connect({
         model: 'gemini-2.5-flash-native-audio-preview-12-2025',
         callbacks: {
           onopen: () => {
@@ -187,7 +188,8 @@ const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
           },
           onerror: (err) => {
             console.error("Gemini Live API error:", err);
-            setError("Live Scan connection failed. Falling back to static mode.");
+            const isQuota = err.message?.includes('429') || (err as any).status === 429;
+            setError(isQuota ? "Daily Scan Limit Reached (Quota). Try again later." : "Live Scan connection failed. Falling back to static mode.");
             stopLive();
             startStaticCaptureMode();
           },
@@ -206,9 +208,12 @@ const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
       sessionRef.current = await sessionPromise;
     } catch (err: any) {
       console.error("Setup error:", err);
+      const isQuota = err.status === 429 || err.message?.includes('429');
       if (err.name === 'NotAllowedError') {
         setPermissionDenied(true);
         setError("Camera/Mic access denied.");
+      } else if (isQuota) {
+        setError("Daily Scan Limit Reached (Quota).");
       } else {
         setError("Initialization failed. Check permissions.");
       }

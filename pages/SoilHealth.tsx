@@ -30,7 +30,7 @@ const SoilHealth: React.FC = () => {
     setResult(null);
 
     try {
- const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: `Act as a soil scientist for Kashmir. Analyze this soil description: "${description}". Soil type: ${soilType}. 

@@ -1,6 +1,8 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+// Fix: Use a more robust import pattern for react-router-dom to handle environment-specific export issues
+import * as ReactRouterDOM from 'react-router-dom';
+const { Link } = ReactRouterDOM as any;
 import { 
   Leaf, 
   Phone, 

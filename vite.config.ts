@@ -1,10 +1,15 @@
-/// <reference types="vite/client" />
 
-interface ImportMetaEnv {
-  readonly VITE_API_KEY: string;
-  // add more env variables here if needed
-}
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
-}
+export default defineConfig({
+  plugins: [react()],
+  define: {
+    'process.env': {
+      API_KEY: JSON.stringify(process.env.API_KEY)
+    }
+  },
+  server: {
+    port: 3000
+  }
+});

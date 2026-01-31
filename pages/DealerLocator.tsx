@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { MapPin, Navigation2, Loader2, AlertCircle, X, ExternalLink, Map as MapIcon, ShieldCheck, Info } from 'lucide-react';
+import { MapPin, Navigation2, Loader2, AlertCircle, X, ExternalLink, Map as MapIcon, ShieldCheck, Search, Globe, Info } from 'lucide-react';
 import { findNearbyDealers } from '../services/gemini';
 
 const DealerLocator: React.FC = () => {
@@ -22,11 +23,7 @@ const DealerLocator: React.FC = () => {
       async (position) => {
         try {
           const res = await findNearbyDealers(position.coords.latitude, position.coords.longitude);
-          // FIX: Ensure text is always a string
-          setResults({
-            text: res.text ?? "No verified dealer information found in this area.",
-            sources: res.sources
-          });
+          setResults(res);
         } catch (err) {
           setError("Failed to locate dealers.");
         } finally {
@@ -118,6 +115,7 @@ const DealerLocator: React.FC = () => {
           )}
           
           <div className="bg-amber-50 p-6 rounded-[2rem] border border-amber-100 flex items-start gap-4">
+             {/* Fix: Added missing Info icon import from lucide-react */}
              <Info className="w-6 h-6 text-amber-600 shrink-0" />
              <p className="text-xs text-amber-900 font-medium leading-relaxed">
                Verified dealers are registered with the J&K Department of Agriculture. Always ask for a formal GST invoice to ensure product quality and guarantee.
